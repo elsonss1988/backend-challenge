@@ -1,6 +1,9 @@
 package com.elson.validador_senha.infrastructure.api;
 
-import com.elson.validador_senha.application.service.ValidadorService;
+import com.elson.validador_senha.application.dto.ValidationRequest;
+import com.elson.validador_senha.application.dto.ValidationResponse;
+import com.elson.validador_senha.application.service.PasswordValidatorService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,15 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/password")
 public class PasswordController {
 
-    @PostMapping("validate")
-    public ResponseEntity<String> validate(@RequestParam("password") String password) {
-            return ResponseEntity.ok("sucess");
+    private final PasswordValidatorService validator;
+
+    public PasswordController(PasswordValidatorService validator) {
+        this.validator = validator;
     }
 
-    @GetMapping("validate")
-    public ResponseEntity<String> check() {
-        return ResponseEntity.ok("sucess");
+    @PostMapping("validate")
+    public ResponseEntity<ValidationResponse> validate(@RequestBody @Valid ValidationRequest request) {
+        boolean isValid = validator.validate(request.password());
+        return ResponseEntity.ok(new ValidationResponse(isValid));
     }
 }
-
-
