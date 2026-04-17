@@ -1,7 +1,9 @@
 package com.elson.validador_senha.domain.components;
 
 import com.elson.validador_senha.domain.components.Interface.PasswordRule;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DigitRule implements PasswordRule {
     @Override
     public boolean isValid(String password) {

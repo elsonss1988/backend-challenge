@@ -1,9 +1,11 @@
 package com.elson.validador_senha.domain.components;
 
 import com.elson.validador_senha.domain.components.Interface.PasswordRule;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+@Component
 public class SpecialCharRule implements PasswordRule {
     private static final Set<Character> SPECIAL_CHARS = Set.of(
             '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+'

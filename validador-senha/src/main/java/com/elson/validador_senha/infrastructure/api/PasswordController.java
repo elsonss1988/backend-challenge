@@ -19,7 +19,8 @@ public class PasswordController {
 
     @PostMapping("validate")
     public ResponseEntity<ValidationResponse> validate(@RequestBody @Valid ValidationRequest request) {
-        boolean isValid = validator.validate(request.password());
-        return ResponseEntity.ok(new ValidationResponse(isValid));
+
+        ValidationResponse result = validator.validate(request.password());
+        return ResponseEntity.ok(result);
     }
 }
