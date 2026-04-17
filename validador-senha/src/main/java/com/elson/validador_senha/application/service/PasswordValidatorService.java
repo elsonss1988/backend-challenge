@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 @Service
 public class PasswordValidatorService {
@@ -20,24 +18,25 @@ public class PasswordValidatorService {
 
     private static final Logger log = LoggerFactory.getLogger(PasswordValidatorService.class);
 
-    public boolean validate(String password) {
+    public ValidationResult validate(String password) {
         if (password == null) {
             log.error("Senha nula -> inválida");
-            return false;
+            return ValidationResult.failure("Password cannot be null");
         }
 
         if (password.isBlank()) {
             log.error("Senha contém espaço em branco -> inválida");
-            return false;
+            return ValidationResult.failure("Password cannot contain whitespace");
+
         }
 
         for (PasswordRule rule : rules) {
             if (!rule.isValid(password)) {
                  log.error("Falha na regra: {}", rule.getErrorMessage());
-                 return false;
+                 return ValidationResult.failure(rule.getErrorMessage());
             }
         }
-                return true;
+        return ValidationResult.success();
     }
 }
 
