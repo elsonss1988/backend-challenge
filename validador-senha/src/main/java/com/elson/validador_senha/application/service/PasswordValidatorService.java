@@ -1,5 +1,6 @@
 package com.elson.validador_senha.application.service;
 
+import com.elson.validador_senha.application.dto.ValidationResponse;
 import com.elson.validador_senha.domain.components.Interface.PasswordRule;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
@@ -18,25 +19,25 @@ public class PasswordValidatorService {
 
     private static final Logger log = LoggerFactory.getLogger(PasswordValidatorService.class);
 
-    public ValidationResult validate(String password) {
+    public ValidationResponse validate(String password) {
         if (password == null) {
             log.error("Senha nula -> inválida");
-            return ValidationResult.failure("Password cannot be null");
+            return ValidationResponse .failure("A senha não pode ser nula");
         }
 
         if (password.isBlank()) {
             log.error("Senha contém espaço em branco -> inválida");
-            return ValidationResult.failure("Password cannot contain whitespace");
+            return ValidationResponse .failure("Password cannot contain whitespace");
 
         }
 
         for (PasswordRule rule : rules) {
             if (!rule.isValid(password)) {
                  log.error("Falha na regra: {}", rule.getErrorMessage());
-                 return ValidationResult.failure(rule.getErrorMessage());
+                 return ValidationResponse .failure(rule.getErrorMessage());
             }
         }
-        return ValidationResult.success();
+        return ValidationResponse .success();
     }
 }
 
